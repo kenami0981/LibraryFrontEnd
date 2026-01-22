@@ -1,11 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import './App.css';
+import LibraryNavbar from './Components/NavBar';
 
 function App() {
   return (
     <div>
-      <h1>TEST APP</h1>
+      <LibraryNavbar/>
       <Outlet />
     </div>
   );

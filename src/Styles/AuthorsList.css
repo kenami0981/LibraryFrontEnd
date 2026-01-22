@@ -1,4 +1,4 @@
-.car-list-wrapper {
+.author-list-wrapper {
     width: 100%;
     max-width: 900px;
     margin: 40px auto;
@@ -6,7 +6,7 @@
     color: #e0e0e0;
 }
 
-.car-list-title {
+.author-list-title {
     text-align: center;
     margin-bottom: 30px;
     font-size: 36px;
@@ -16,7 +16,7 @@
     animation: fadeIn 0.8s ease;
 }
 
-.car-list {
+.author-list {
     list-style: none;
     display: flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
 }
 
 
-.car-card {
+.author-card {
     background: #2a2a2a;
     padding: 18px 25px;
     border-radius: 12px;
@@ -36,24 +36,24 @@
 }
 
 
-.car-card:nth-child(1) { animation-delay: 0.1s; }
-.car-card:nth-child(2) { animation-delay: 0.2s; }
-.car-card:nth-child(3) { animation-delay: 0.3s; }
-.car-card:nth-child(4) { animation-delay: 0.4s; }
-.car-card:nth-child(5) { animation-delay: 0.5s; }
-.car-card:nth-child(6) { animation-delay: 0.6s; }
-.car-card:nth-child(7) { animation-delay: 0.7s; }
-.car-card:nth-child(8) { animation-delay: 0.8s; }
-.car-card:nth-child(9) { animation-delay: 0.9s; }
-.car-card:nth-child(10) { animation-delay: 1.0s; }
+.author-card:nth-child(1) { animation-delay: 0.1s; }
+.author-card:nth-child(2) { animation-delay: 0.2s; }
+.author-card:nth-child(3) { animation-delay: 0.3s; }
+.author-card:nth-child(4) { animation-delay: 0.4s; }
+.author-card:nth-child(5) { animation-delay: 0.5s; }
+.author-card:nth-child(6) { animation-delay: 0.6s; }
+.author-card:nth-child(7) { animation-delay: 0.7s; }
+.author-card:nth-child(8) { animation-delay: 0.8s; }
+.author-card:nth-child(9) { animation-delay: 0.9s; }
+.author-card:nth-child(10) { animation-delay: 1.0s; }
 
-.car-card:hover {
+.author-card:hover {
     transform: translateY(-4px) scale(1.02);
     background: #333;
     box-shadow: 0 6px 16px rgba(0,0,0,0.35);
 }
 
-.car-link {
+.author-link {
     text-decoration: none;
     color: #e0e0e0;
     display: flex;
@@ -61,20 +61,20 @@
     align-items: center;
 }
 
-.car-link h2 {
+.author-link h2 {
     margin: 0;
     font-size: 22px;
     font-weight: 600;
 }
 
-.car-arrow {
+.author-arrow {
     font-size: 22px;
     opacity: 0;
     transform: translateX(-10px);
     transition: 0.25s ease;
 }
 
-.car-card:hover .car-arrow {
+.author-card:hover .author-arrow {
     opacity: 1;
     transform: translateX(0);
 }

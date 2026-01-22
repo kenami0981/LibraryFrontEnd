@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "../Styles/AuthorsList.css"; // możesz później zmienić nazwę na AuthorsList.css 😉
+import "../Styles/AuthorsList.css";
 import { Author} from "../Models/Author";
 import axios from "axios";
 import { Link } from "react-router-dom";
@@ -29,15 +29,15 @@ export default function AuthorsList() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="car-list-wrapper">
-      <h1 className="car-list-title">Lista autorów</h1>
+    <div className="author-list-wrapper">
+      <h1 className="author-list-title">Lista autorów</h1>
 
-      <ul className="car-list">
+      <ul className="author-list">
         {authors.map((author) => (
-          <li key={author.id} className="car-card">
-            <Link to={`/authors/${author.id}`} className="car-link">
+          <li key={author.id} className="author-card">
+            <Link to={`/authors/${author.id}`} className="author-link">
               <h2>{author.fullName}</h2>
-              <span className="car-arrow">→</span>
+              <span className="author-arrow">→</span>
             </Link>
           </li>
         ))}
