@@ -12,14 +12,13 @@ export enum BookGenre
     Thriller,
     SelfHelp
 }
-export interface Book {
+export interface BookDto {
   id: string;
   title: string;
-  description?: string;
-  genre: BookGenre;
-  authorId: string;
-  author: Author;
+  description?: string | null;
+  genre: string;
   publishedDate: string;
+  authorName: string;
   isbn: string;
   pageCount: number;
   publisher: string;

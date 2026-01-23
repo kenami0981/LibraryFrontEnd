@@ -1,5 +1,5 @@
 
-import { Book } from "./Book";
+import { BookDto } from "./Book";
 
 export interface Author {
   id: string; 
@@ -7,6 +7,6 @@ export interface Author {
   biography?: string;
   nationality?: string;
   dateOfBirth?: string; 
-  books: Book[]; 
+  books: BookDto[]; 
 }
 

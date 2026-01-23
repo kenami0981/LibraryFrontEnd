@@ -1,0 +1,78 @@
+.books-list-wrapper {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.book-card {
+  background: #1f1f1f;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+  transition: 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 28px rgba(0,0,0,0.55);
+}
+
+.book-card h2 {
+  color: #a8c7ff;
+  font-size: 22px;
+  margin-bottom: 2px;
+}
+
+.book-author {
+  color: #cfcfcf;
+  font-size: 16px;
+}
+
+.book-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  color: #7fb2ff;
+}
+
+
+
+.availability {
+  margin-top: auto;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.availability.yes {
+  color: #4caf50;
+}
+
+.availability.no {
+  color: #ff5a5a;
+}
+
+.details-btn {
+  margin-top: 10px;
+  text-decoration: none;
+  align-self: flex-end;
+  color: #7fb2ff;
+  font-weight: 500;
+  transition: 0.25s ease;
+}
+
+.details-btn:hover {
+  color: #a8c7ff;
+  transform: translateX(4px);
+}
