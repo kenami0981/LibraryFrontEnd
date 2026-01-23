@@ -13,19 +13,31 @@ export default function AuthorDetails() {
   const [error, setError] = useState<string | null>(null);
 
   const [isEditing, setIsEditing] = useState(false);
-  const [formData, setFormData] = useState<Partial<Author>>({});
+  const [formData, setFormData] = useState({
+  firstName: "",
+  lastName: "",
+  biography: "",
+  nationality: "",
+  dateOfBirth: ""
+});
 
   useEffect(() => {
     axios
       .get<Author>(`https://localhost:7285/api/author/${id}`)
       .then((res) => {
         setAuthor(res.data);
-        setFormData({
-          fullName: res.data.fullName,
-          biography: res.data.biography,
-          nationality: res.data.nationality,
-          dateOfBirth: res.data.dateOfBirth,
-        });
+        const parts = res.data.fullName.split(" ");
+
+      setFormData({
+        firstName: parts[0] || "",
+        lastName: parts.slice(1).join(" ") || "",
+        biography: res.data.biography || "",
+        nationality: res.data.nationality || "",
+        dateOfBirth: res.data.dateOfBirth
+          ? res.data.dateOfBirth.substring(0, 10)
+          : ""
+      });
+
       })
       .catch(() => setError("Error loading author details"))
       .finally(() => setLoading(false));
@@ -54,9 +66,23 @@ export default function AuthorDetails() {
 
   const handleSave = async () => {
     try {
-      await axios.put(`https://localhost:7285/api/author/${id}`, formData);
+      await axios.put(`https://localhost:7285/api/author/${id}`, {
+  firstName: formData.firstName,
+  lastName: formData.lastName,
+  biography: formData.biography,
+  nationality: formData.nationality,
+  dateOfBirth: formData.dateOfBirth || null
+});
+
       alert("Author updated!");
-      setAuthor((prev) => ({ ...prev!, ...formData }));
+      setAuthor((prev) => ({
+  ...prev!,
+  fullName: `${formData.firstName} ${formData.lastName}`,
+  biography: formData.biography,
+  nationality: formData.nationality,
+  dateOfBirth: formData.dateOfBirth
+}));
+
       setIsEditing(false);
     } catch {
       alert("Failed to update author");
@@ -111,13 +137,20 @@ export default function AuthorDetails() {
             <h2>Edit Author</h2>
 
             <div className="editauthor-form">
-              <label>Full name:</label>
+              <label>First name:</label>
               <input
-                type="text"
-                name="fullName"
-                value={formData.fullName || ""}
+                name="firstName"
+                value={formData.firstName}
                 onChange={handleChange}
               />
+
+              <label>Last name:</label>
+              <input
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+              />
+
 
               <label>Nationality:</label>
               <input
