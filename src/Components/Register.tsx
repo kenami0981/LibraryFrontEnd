@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../Styles/AuthorDetails.css";
 
-export default function RegisterPage() {
+export default function Register() {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,10 +19,7 @@ export default function RegisterPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleRegister = async () => {
@@ -45,22 +42,14 @@ export default function RegisterPage() {
 
       navigate("/login");
     } catch (err: any) {
-  const data = err.response?.data;
+      const data = err.response?.data;
 
-    if (data?.errors) {
-        const messages = Object.values(data.errors)
-        .flat()
-        .join(" ");
+      if (data?.errors) {
+        const messages = Object.values(data.errors).flat().join(" ");
         setError(messages);
-    } else if (data?.detail) {
-        setError(data.detail);
-    } else if (data?.title) {
-        setError(data.title);
-    } else {
+      } else {
         setError("Registration failed");
-    }
-
-
+      }
     } finally {
       setLoading(false);
     }
@@ -75,52 +64,23 @@ export default function RegisterPage() {
 
         <div className="editauthor-form">
           <label>Email:</label>
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-          />
+          <input name="email" value={formData.email} onChange={handleChange} />
 
           <label>Username:</label>
-          <input
-            type="text"
-            name="username"
-            value={formData.username}
-            onChange={handleChange}
-          />
+          <input name="username" value={formData.username} onChange={handleChange} />
 
           <label>Display name:</label>
-          <input
-            type="text"
-            name="displayName"
-            value={formData.displayName}
-            onChange={handleChange}
-          />
+          <input name="displayName" value={formData.displayName} onChange={handleChange} />
 
           <label>Password:</label>
-          <input
-            type="password"
-            name="password"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <input type="password" name="password" value={formData.password} onChange={handleChange} />
 
           <label>Confirm password:</label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={formData.confirmPassword}
-            onChange={handleChange}
-          />
+          <input type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} />
 
           {error && <p style={{ color: "#ff6b6b" }}>{error}</p>}
 
-          <button
-            className="primary-btn"
-            onClick={handleRegister}
-            disabled={loading}
-          >
+          <button className="primary-btn" onClick={handleRegister} disabled={loading}>
             {loading ? "Registering..." : "Register"}
           </button>
 
@@ -131,10 +91,7 @@ export default function RegisterPage() {
       </div>
 
       <br />
-
-      <Link to="/login" className="back-link">
-        Login
-      </Link>
+      <Link to="/login" className="back-link">Login</Link>
     </div>
   );
 }

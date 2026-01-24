@@ -1,11 +1,17 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import "../Styles/AuthorDetails.css";
 
 interface LoginFormData {
   email: string;
   password: string;
+}
+
+interface JwtPayload {
+  unique_name?: string;
+  role?: string | string[];
 }
 
 export default function Login() {
@@ -21,10 +27,7 @@ export default function Login() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
   const handleLogin = async () => {
@@ -34,26 +37,23 @@ export default function Login() {
     try {
       const response = await axios.post(
         "https://localhost:7285/api/Account/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        }
+        formData
       );
 
-      localStorage.setItem("token", response.data.token);
+      const token = response.data.token;
+      const decoded = jwtDecode<JwtPayload>(token);
+
+      const roleClaim = decoded.role;
+      const roles = Array.isArray(roleClaim) ? roleClaim : [roleClaim];
+      const role = roles.includes("Admin") ? "Admin" : "User";
+
+      localStorage.setItem("token", token);
       localStorage.setItem("username", response.data.username);
+      localStorage.setItem("role", role);
 
       window.location.href = "/";
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        setError("Incorrect email or password.");
-      } else {
-        setError(
-          err.response?.data?.message ||
-            err.response?.data ||
-            "Login failed"
-        );
-      }
+    } catch {
+      setError("Incorrect email or password.");
     } finally {
       setLoading(false);
     }
@@ -69,7 +69,6 @@ export default function Login() {
         <div className="editauthor-form">
           <label>Email:</label>
           <input
-            type="email"
             name="email"
             value={formData.email}
             onChange={handleChange}
@@ -100,10 +99,12 @@ export default function Login() {
       </div>
 
       <br />
-
       <Link to="/register" className="back-link">
         Register
       </Link>
     </div>
   );
 }
+
+
+

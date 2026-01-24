@@ -21,6 +21,9 @@ export default function AuthorDetails() {
     dateOfBirth: "",
   });
 
+  const role = localStorage.getItem("role");
+  const isAdmin = role === "Admin";
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -52,6 +55,8 @@ export default function AuthorDetails() {
       .catch((err) => {
         if (err.response?.status === 401) {
           navigate("/login");
+        } else if (err.response?.status === 403) {
+          setError("You are not authorized to view this page");
         } else {
           setError("Error loading author details");
         }
@@ -60,6 +65,8 @@ export default function AuthorDetails() {
   }, [id, navigate]);
 
   const handleDelete = async () => {
+    if (!isAdmin) return;
+
     if (!window.confirm("Are you sure you want to delete this author?")) return;
 
     try {
@@ -88,6 +95,8 @@ export default function AuthorDetails() {
   };
 
   const handleSave = async () => {
+    if (!isAdmin) return;
+
     try {
       const token = localStorage.getItem("token");
 
@@ -155,14 +164,22 @@ export default function AuthorDetails() {
             </p>
           </div>
 
-          <div className="details-buttons">
-            <button className="btn-edit" onClick={() => setIsEditing(true)}>
-              Edit
-            </button>
-            <button className="btn-delete" onClick={handleDelete}>
-              Delete
-            </button>
-          </div>
+          {isAdmin && (
+            <div className="details-buttons">
+              <button
+                className="btn-edit"
+                onClick={() => setIsEditing(true)}
+              >
+                Edit
+              </button>
+              <button
+                className="btn-delete"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+          )}
         </div>
       ) : (
         <div className="editauthor-container">
@@ -210,7 +227,10 @@ export default function AuthorDetails() {
             <button className="primary-btn" onClick={handleSave}>
               Save
             </button>
-            <button className="back-btn" onClick={() => setIsEditing(false)}>
+            <button
+              className="back-btn"
+              onClick={() => setIsEditing(false)}
+            >
               Cancel
             </button>
           </div>
@@ -225,4 +245,5 @@ export default function AuthorDetails() {
     </div>
   );
 }
+
 
