@@ -2,28 +2,46 @@ import { useEffect, useState } from "react";
 import "../Styles/AuthorsList.css";
 import { Author} from "../Models/Author";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AuthorsList() {
+    const navigate = useNavigate();
+
   const [authors, setAuthors] = useState<Author[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    setLoading(true);
+  const token = localStorage.getItem("token");
 
-    axios
-      .get<Author[]>("https://localhost:7285/api/author")
-      .then((response) => {
-        setAuthors(response.data);
-      })
-      .catch(() => {
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  setLoading(true);
+
+  axios
+    .get<Author[]>("https://localhost:7285/api/author", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((response) => {
+      setAuthors(response.data);
+    })
+    .catch((err) => {
+      if (err.response?.status === 401) {
+        navigate("/login");
+      } else {
         setError("Błąd podczas pobierania autorów");
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, []);
+      }
+    })
+    .finally(() => {
+      setLoading(false);
+    });
+}, [navigate]);
+
 
   if (loading) return <p>Ładowanie autorów...</p>;
   if (error) return <p>{error}</p>;

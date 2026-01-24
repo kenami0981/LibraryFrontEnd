@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../Styles/AuthorDetails.css";
@@ -13,6 +13,14 @@ interface AuthorCreateForm {
 
 export default function AuthorForm() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+  }
+  }, [navigate]);
 
   const [formData, setFormData] = useState<AuthorCreateForm>({
     firstName: "",
@@ -35,29 +43,43 @@ export default function AuthorForm() {
     }));
   };
 
-  const handleCreate = async () => {
-  setLoading(true);
-  setError(null);
+    const handleCreate = async () => {
+    setLoading(true);
+    setError(null);
 
-  try {
-    await axios.post("https://localhost:7285/api/author", {
-  firstName: formData.firstName,
-  lastName: formData.lastName,
-  biography: formData.biography,
-  nationality: formData.nationality,
-  dateOfBirth: formData.dateOfBirth || null
-});
+    try {
+      const token = localStorage.getItem("token");
 
+      await axios.post(
+        "https://localhost:7285/api/author",
+        {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          biography: formData.biography,
+          nationality: formData.nationality,
+          dateOfBirth: formData.dateOfBirth || null,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
-    alert("Author created successfully!");
-    navigate("/authors");
-  } catch (err: any) {
-    console.error(err.response?.data);
-    setError(err.response?.data || "Failed to create author");
-  } finally {
-    setLoading(false);
-  }
-};
+      alert("Author created successfully!");
+      navigate("/authors");
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        setError("You must be logged in.");
+        navigate("/login");
+      } else {
+        setError(err.response?.data || "Failed to create author");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
 
   return (

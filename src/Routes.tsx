@@ -7,8 +7,8 @@ import AuthorsList from "./Components/AuthorsList";
 import AuthorDetails from "./Components/AuthorDetails";
 import AuthorForm from "./Components/AuthorForm";
 //import NotFound from "./Components/NotFound";
-//import Login from "./Components/Login";
-//import Register from "./Components/Register";
+import Login from "./Components/Login";
+import Register from "./Components/Register";
 
 export const routes: RouteObject[] = [
     {
@@ -24,8 +24,8 @@ export const routes: RouteObject[] = [
             {path: 'editauthor/:id', element: <AuthorForm />},
             {path: 'add-author', element: <AuthorForm />},
             //{path: 'not-found', element: <NotFound />},
-            //{path: 'login', element: <Login/>},
-            //{path: 'register', element: <Register/>},
+            {path: 'login', element: <Login/>},
+            {path: 'register', element: <Register/>},
             //{path: '*', element: <Navigate replace to='/not-found' />}
 
 
