@@ -18,6 +18,7 @@ export interface BookDto {
   description?: string | null;
   genre: string;
   publishedDate: string;
+  authorId: string;
   authorName: string;
   isbn: string;
   pageCount: number;
