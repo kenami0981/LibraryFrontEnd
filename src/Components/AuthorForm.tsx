@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../Styles/AuthorDetails.css";
-
 interface AuthorCreateForm {
   firstName: string;
   lastName: string;
@@ -10,8 +9,52 @@ interface AuthorCreateForm {
   nationality?: string;
   dateOfBirth?: string;
 }
+interface AuthorFormErrors {
+  firstName?: string;
+  lastName?: string;
+  biography?: string;
+  nationality?: string;
+  dateOfBirth?: string;
+}
+const validateAuthorForm = (data: AuthorCreateForm): AuthorFormErrors => {
+  const errors: AuthorFormErrors = {};
+
+  if (!data.firstName.trim()) {
+    errors.firstName = "First name is required.";
+  } else if (data.firstName.length > 50) {
+    errors.firstName = "First name cannot exceed 50 characters.";
+  }
+
+  if (!data.lastName.trim()) {
+    errors.lastName = "Last name is required.";
+  } else if (data.lastName.length > 50) {
+    errors.lastName = "Last name cannot exceed 50 characters.";
+  }
+
+  if (data.biography && data.biography.length > 2000) {
+    errors.biography = "Biography cannot exceed 2000 characters.";
+  }
+
+  if (data.nationality && data.nationality.length > 50) {
+    errors.nationality = "Nationality cannot exceed 50 characters.";
+  }
+
+  if (data.dateOfBirth) {
+    const dob = new Date(data.dateOfBirth);
+    if (dob > new Date()) {
+      errors.dateOfBirth = "Date of birth cannot be in the future.";
+    }
+  }
+
+  return errors;
+};
+
+
+
+
 
 export default function AuthorForm() {
+  const [formErrors, setFormErrors] = useState<AuthorFormErrors>({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,10 +87,18 @@ export default function AuthorForm() {
   };
 
     const handleCreate = async () => {
-    setLoading(true);
-    setError(null);
+  const errors = validateAuthorForm(formData);
 
-    try {
+  if (Object.keys(errors).length > 0) {
+    setFormErrors(errors);
+    return;
+  }
+
+  setFormErrors({});
+  setLoading(true);
+  setError(null);
+
+  try {
       const token = localStorage.getItem("token");
 
       await axios.post(
@@ -97,6 +148,9 @@ export default function AuthorForm() {
             value={formData.firstName}
             onChange={handleChange}
           />
+          {formErrors.firstName && (
+  <p className="error">{formErrors.firstName}</p>
+)}
 
           <label>Last name:</label>
           <input
@@ -105,6 +159,10 @@ export default function AuthorForm() {
             value={formData.lastName}
             onChange={handleChange}
           />
+{formErrors.lastName && (
+  <p className="error">{formErrors.lastName}</p>
+)}
+
 
           <label>Nationality:</label>
           <input
@@ -113,6 +171,9 @@ export default function AuthorForm() {
             value={formData.nationality}
             onChange={handleChange}
           />
+          {formErrors.nationality && (
+  <p className="error">{formErrors.nationality}</p>
+)}
 
           <label>Date of birth:</label>
           <input
@@ -121,6 +182,9 @@ export default function AuthorForm() {
             value={formData.dateOfBirth}
             onChange={handleChange}
           />
+          {formErrors.dateOfBirth && (
+  <p className="error">{formErrors.dateOfBirth}</p>
+)}
 
           <label>Biography:</label>
           <textarea
