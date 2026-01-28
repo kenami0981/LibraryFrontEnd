@@ -176,7 +176,7 @@ export default function BookDetails() {
       type === "checkbox"
         ? (e.target as HTMLInputElement).checked
         : name === "pageCount"
-        ? Number(value)  // ← Konwertuj pageCount na number
+        ? Number(value)
         : name === "genre" 
         ? value : value,
 
@@ -191,21 +191,20 @@ export default function BookDetails() {
 const handleSave = async () => {
   if (!isAdmin) return;
 
-  // Walidacja formularza
   const errors = validateForm({
   title: formData.title,
   authorId: formData.authorId,
   publishedDate: formData.publishedDate,
   isbn: formData.isbn,
-  pageCount: formData.pageCount,  // ← już jest number, nie konwertuj
+  pageCount: formData.pageCount,
   publisher: formData.publisher,
-  genre: formData.genre,  // może być null lub string
+  genre: formData.genre,
   description: formData.description,
 });
 
   if (Object.keys(errors).length > 0) {
     setFormErrors(errors);
-    return; // nie wysyłamy jeśli są błędy
+    return;
   }
 
   setFormErrors({});
@@ -224,7 +223,6 @@ const handleSave = async () => {
       { headers: { Authorization: `Bearer ${token}` } }
     );
 
-    // odświeżenie książki po edycji
     const res = await axios.get<BookDto>(`https://localhost:7285/api/book/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });

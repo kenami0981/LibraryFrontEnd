@@ -142,7 +142,7 @@ const handleCreate = async () => {
   const errors = validateForm(formData);
   if (Object.keys(errors).length > 0) {
     setFormErrors(errors);
-    return; // zatrzymujemy wysyłkę jeśli są błędy
+    return;
   }
 
   setFormErrors({});

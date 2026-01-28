@@ -23,6 +23,7 @@ export const routes: RouteObject[] = [
             {path: 'authors/:id', element: <AuthorDetails />},
             {path: 'editauthor/:id', element: <AuthorForm />},
             {path: 'add-author', element: <AuthorForm />},
+            {path: '', element: <BooksList/>},
             //{path: 'not-found', element: <NotFound />},
             {path: 'login', element: <Login/>},
             {path: 'register', element: <Register/>},
